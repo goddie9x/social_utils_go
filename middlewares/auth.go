@@ -22,7 +22,7 @@ type UserAuth struct {
 	Role     Role   `json:"role"`
 }
 
-func GetAuthAndPutCurrentUserAuthToBody() gin.HandlerFunc {
+func PutAuthToContext() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		currentUserJson := c.GetHeader("X-Current-User")
 		if currentUserJson == "" {
