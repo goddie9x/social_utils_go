@@ -18,8 +18,7 @@ type UserAuth struct {
 func PutAuthToContext(c *gin.Context) {
 	currentUserJson := c.GetHeader("X-Current-User")
 	if currentUserJson == "" {
-		log.Printf("Not have auth")
-		c.AbortWithStatusJSON(http.StatusNonAuthoritativeInfo, gin.H{"error": "Not have auth"})
+		c.Next()
 		return
 	}
 	var currentUser UserAuth
