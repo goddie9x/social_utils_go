@@ -4,22 +4,15 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"post_service/pkg/constants"
 
 	"github.com/gin-gonic/gin"
 )
 
-type Role int
-
-const (
-	Admin Role = iota
-	Mod
-	User
-)
-
 type UserAuth struct {
-	UserId   string `json:"userId"`
-	UserName string `json:"username"`
-	Role     Role   `json:"role"`
+	UserId   string         `json:"userId"`
+	UserName string         `json:"username"`
+	Role     constants.Role `json:"role"`
 }
 
 func PutAuthToContext(c *gin.Context) {
