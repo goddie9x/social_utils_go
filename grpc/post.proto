@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+package post_service;
+
+option go_package = "post_service/proto;post_service";
+
+enum PrivacyType {
+    PRIVACY_TYPE_PUBLIC = 0;
+    PRIVACY_TYPE_PRIVATE = 1;
+    PRIVACY_TYPE_PROTECTED = 2;
+}
+
+enum PostType {
+    POST_TYPE_PERSONAL = 0;
+    POST_TYPE_GROUP = 1;
+}
+
+message Post {
+  string id = 1;
+  string owner_id = 2;
+  PostType type = 3;
+  string target_id = 4;
+  string content = 5;
+  int64 created_at = 6;
+  int64 updated_at = 7;
+  PrivacyType privacy = 8;
+  bool approved = 9;
+  repeated Mention mentions = 10;
+  repeated Tag tags = 11;
+  repeated string blob_ids = 12;
+}
+
+message Mention {
+  string post_id = 1;
+  string user_id = 2;
+  bool accepted_show_in_profile = 3;
+}
+
+message Tag {
+  string name = 1;
+}
+
+message PostWithAuthRequest {
+  UserAuth user = 1;
+  Post post = 2;
+}
+
+message RequestWithAuthAndId {
+  UserAuth user = 1;
+  string id = 2;
+}
+
+message PaginationRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+
+message GetPostByTagWithPaginationRequest {
+  UserAuth user = 1;
+  PaginationRequest pagination = 2;
+  string tag = 3;
+}
+
+message GetPostByMentionWithPaginationRequest {
+  UserAuth user = 1;
+  PaginationRequest pagination = 2;
+  string mention = 3;
+}
+message GetPostForUserWithPagination {
+  UserAuth user = 1;
+  PaginationRequest pagination = 2;
+  string user_id = 3;
+}
+
+message PostResponse {
+  Post post = 1;
+}
+
+message ListPostWithPaginationResponse {
+  repeated Post posts = 1;
+  int64 amount_page = 2;
+}
+
+message UserAuth {
+  int32 role = 1;
+  string user_id = 2;
+  string username = 3;
+}
+
+service PostService {
+  rpc Create(PostWithAuthRequest) returns (PostResponse);
+  rpc Update(PostWithAuthRequest) returns (PostResponse);
+  rpc GetByIdIfUserCanView(RequestWithAuthAndId) returns (PostResponse);
+  rpc DeleteById(RequestWithAuthAndId) returns (PostResponse);
+  rpc GetPostsByTagWithPagination(GetPostByTagWithPaginationRequest) returns (ListPostWithPaginationResponse);
+  rpc GetPostsWithPagination(PaginationRequest) returns (ListPostWithPaginationResponse);
+  rpc GetPostByMentionWithPagination(GetPostByMentionWithPaginationRequest) returns (ListPostWithPaginationResponse);
+  rpc GetPostsForUserProfile(GetPostForUserWithPagination) returns (ListPostWithPaginationResponse);
+}

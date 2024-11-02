@@ -2,8 +2,10 @@ package configs
 
 import (
 	"fmt"
+	"log"
 	"post_service/pkg/dotenv"
 	"strconv"
+	"time"
 
 	"github.com/hudl/fargo"
 )
@@ -42,4 +44,20 @@ func (d *DiscoveryServerConnect) ConnectToEurekaDiscoveryServer() {
 	fargoConfig.Eureka.PollIntervalSeconds = 30
 	d.conn = fargo.NewConnFromConfig(fargoConfig)
 	d.conn.RegisterInstance(&d.instance)
+
+	go d.sendHeartbeats()
+}
+
+func (d *DiscoveryServerConnect) sendHeartbeats() {
+	heartbeatInterval := time.Duration(d.instance.LeaseInfo.RenewalIntervalInSecs) * time.Second
+
+	for {
+		time.Sleep(heartbeatInterval)
+		err := d.conn.HeartBeatInstance(&d.instance)
+		if err != nil {
+			log.Printf("Failed to send heartbeat: %v", err)
+		} else {
+			log.Printf("Successfully sent heartbeat for instance %s", d.instance.InstanceId)
+		}
+	}
 }

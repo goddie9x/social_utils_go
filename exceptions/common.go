@@ -1,13 +1,19 @@
 package exceptions
 
+import "fmt"
+
 type CommonExceptionInterface interface {
 	GetHTTPErrorCode() int
 	GetErrorMessage() string
+	Error() string
 }
-
 type CommonException struct {
 	errorCode    int
 	errorMessage string
+}
+
+func (ex CommonException) Error() string {
+	return fmt.Sprintf("Error %d: %s", ex.errorCode, ex.errorMessage)
 }
 
 func NewCommonException(errorCode int, errorMessage string) CommonExceptionInterface {
