@@ -3,9 +3,13 @@ package constants
 type Role int
 
 const (
-	Admin Role = iota
-	Mod
+	// Unknown is the zero value and must stay the most restrictive role.
+	// A Role unmarshalled from a missing JSON field (or a zero-valued
+	// UserAuth) must never escalate to Admin.
+	Unknown Role = iota
 	User
+	Mod
+	Admin
 )
 
 type PrivacyType int
