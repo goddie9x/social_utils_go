@@ -5,9 +5,11 @@ package post_service;
 option go_package = "post_service/proto;post_service";
 
 enum PrivacyType {
-    PRIVACY_TYPE_PUBLIC = 0;
-    PRIVACY_TYPE_PRIVATE = 1;
-    PRIVACY_TYPE_PROTECTED = 2;
+    // 0 must be the most restrictive (Private). A zero-valued privacy
+    // (e.g. from a missing field) must never expose a post publicly.
+    PRIVACY_TYPE_PRIVATE = 0;
+    PRIVACY_TYPE_PUBLIC = 1;
+    PRIVACY_TYPE_FRIEND = 2;
 }
 
 enum PostType {
