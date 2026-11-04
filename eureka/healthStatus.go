@@ -1,4 +1,4 @@
-package pkg
+package eureka
 
 import (
 	"net/http"

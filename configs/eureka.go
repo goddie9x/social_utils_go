@@ -3,7 +3,7 @@ package configs
 import (
 	"fmt"
 	"log"
-	"post_service/pkg/dotenv"
+	"github.com/goddie9x/social_utils_go/dotenv"
 	"strconv"
 	"time"
 

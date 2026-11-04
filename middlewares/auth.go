@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"post_service/pkg/constants"
+	"github.com/goddie9x/social_utils_go/constants"
 
 	"github.com/gin-gonic/gin"
 )

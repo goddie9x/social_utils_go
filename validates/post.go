@@ -1,8 +1,8 @@
 package validates
 
 import (
-	"post_service/pkg/constants"
-	"post_service/pkg/middlewares"
+	"github.com/goddie9x/social_utils_go/constants"
+	"github.com/goddie9x/social_utils_go/middlewares"
 )
 
 func CanModifyTarget(currentUser middlewares.UserAuth, targetOwnerId string) bool {
